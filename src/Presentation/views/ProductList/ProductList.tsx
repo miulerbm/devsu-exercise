@@ -73,19 +73,20 @@ const ProductListScreen = ({ navigation, route }: Props) => {
   };
 
   const renderProduct = ({ item }: { item: ProductInterface }) => (
-    <View style={styles.productItem}>
-      <View>
-        <Text style={{ color: "black" }}>{item.name}</Text>
-        <Text style={{ color: "#A0A0A0" }}>ID: {item.id}</Text>
-      </View>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("ProductDetailScreen", { id: item.id })
-        }
-      >
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={() =>
+        navigation.navigate("ProductDetailScreen", { id: item.id })
+      }
+    >
+      <View style={styles.productItem}>
+        <View>
+          <Text style={{ color: "black" }}>{item.name}</Text>
+          <Text style={{ color: "#A0A0A0" }}>ID: {item.id}</Text>
+        </View>
         <Text style={styles.arrowButton}>{">"}</Text>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 
   return (

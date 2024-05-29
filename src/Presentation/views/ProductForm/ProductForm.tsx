@@ -135,7 +135,11 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
               ]}
             >
               <TextInput
-                style={[styles.input, isEditing && { color: "#A0A0A0" }]}
+                style={[
+                  styles.input,
+                  error && { borderColor: "red", borderWidth: 1 },
+                  isEditing && { color: "#A0A0A0" },
+                ]}
                 placeholderTextColor="#999"
                 editable={!isEditing}
                 defaultValue={product ? product.id : ""}
@@ -164,7 +168,10 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
           }) => (
             <View style={styles.inputContainer}>
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  error && { borderColor: "red", borderWidth: 1 },
+                ]}
                 placeholderTextColor="#999"
                 defaultValue={product ? product.name : ""}
                 value={value}
@@ -192,7 +199,10 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
           }) => (
             <View style={styles.inputContainer}>
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  error && { borderColor: "red", borderWidth: 1 },
+                ]}
                 placeholderTextColor="#999"
                 defaultValue={product ? product.description : ""}
                 value={value}
@@ -248,7 +258,12 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <View style={styles.inputContainer}>
               <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-                <View style={styles.inputDate}>
+                <View
+                  style={[
+                    styles.inputDate,
+                    error && { borderColor: "red", borderWidth: 1 },
+                  ]}
+                >
                   <Text>
                     {value
                       ? moment(value).format("DD/MM/YYYY")
@@ -286,11 +301,17 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
           control={control}
           name="date_revision"
           render={({ field: { value }, fieldState: { error } }) => (
-            <View
-              style={[styles.inputContainer, { backgroundColor: "#F5F5F5" }]}
-            >
+            <View style={[styles.inputContainer]}>
               <TextInput
-                style={[styles.input, { color: "#A0A0A0", fontSize: 14 }]}
+                style={[
+                  styles.input,
+                  {
+                    color: "#A0A0A0",
+                    fontSize: 14,
+                    backgroundColor: "#F5F5F5",
+                  },
+                  error && { borderColor: "red", borderWidth: 1 },
+                ]}
                 placeholder={
                   product
                     ? moment(product.date_revision).format("DD/MM/YYYY")
@@ -323,8 +344,7 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
             fontFamily: "serif",
           }}
         >
-          Formulario de
-          {isEditing ? <Text> Actualización</Text> : <Text> Registro</Text>}
+          Formulario de Registro
         </Text>
       </View>
 

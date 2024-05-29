@@ -100,7 +100,7 @@ const ProductDetailScreen = ({ navigation, route }: Props) => {
           </View>
         </View>
       </View>
-      <View style={{ gap: 16 }}>
+      <View style={{ gap: 10 }}>
         <Button
           title="Editar"
           type="secondary"
