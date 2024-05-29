@@ -38,7 +38,7 @@ const ProductListStyles = StyleSheet.create({
     elevation: 2,
   },
   arrowButton: {
-    fontSize: 18,
+    fontSize: 24,
     color: "#A0A0A0",
     textAlignVertical: "center",
   },

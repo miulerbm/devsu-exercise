@@ -15,7 +15,6 @@ const ProductDetailStyles = StyleSheet.create({
   },
   infoField: {
     flexDirection: "row",
-    backgroundColor: "pink",
     justifyContent: "space-between",
     alignItems: "center",
     marginVertical: 12,
@@ -36,9 +35,7 @@ const ProductDetailStyles = StyleSheet.create({
     marginTop: 16,
   },
   productName: {
-    // fontSize: 12,
     fontWeight: "bold",
-    // marginBottom: 8,
   },
   productDescription: {
     fontSize: 16,
@@ -47,17 +44,20 @@ const ProductDetailStyles = StyleSheet.create({
   },
   logoContainer: {
     flexDirection: "column",
-    // alignItems: "center",
-    marginBottom: 16,
+  },
+  imageContainer: {
+    height: 100,
+    alignItems: "center",
+    marginVertical: 10,
   },
   logoText: {
     fontSize: 16,
     marginRight: 8,
   },
   logoImage: {
-    width: "50%",
+    height: 100,
+    width: 100,
     flex: 1,
-    height: "auto",
     borderRadius: 8,
   },
   dateText: {

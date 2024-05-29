@@ -14,7 +14,7 @@ const singleProduct = {
   name: "Nombre",
   description:
     "Descripción del producto Descripción del producto Descripción del producto Descripción del producto Descripción del producto Descripción del producto",
-  logo: "https://via.placeholder.com/200",
+  logo: "https://via.placeholder.com/100",
   date_release: "2023-01-01",
   date_revision: "2024-01-01",
 };
@@ -27,19 +27,17 @@ const ProductDetailScreen = () => {
         <GrayDivider />
         <View style={styles.idContainer}>
           <Text style={styles.idText}>ID: {singleProduct.id}</Text>
-          <Text style={styles.extraInfo}>
-            Información adicional sobre el ID
-          </Text>
+          <Text style={styles.extraInfo}>Información extra</Text>
         </View>
 
         <View style={styles.productDetailsContainer}>
           <View style={styles.infoField}>
-            <Text>Nombre</Text>
+            <Text style={styles.extraInfo}>Nombre</Text>
             <Text style={{ fontWeight: "bold" }}>[{singleProduct.name}]</Text>
           </View>
 
           <View style={styles.infoField}>
-            <Text>Descripción</Text>
+            <Text style={styles.extraInfo}>Descripción</Text>
             <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
               [{singleProduct.description}]
             </Text>
@@ -50,24 +48,32 @@ const ProductDetailScreen = () => {
               style={{
                 flexDirection: "row",
                 justifyContent: "flex-start",
-                backgroundColor: "blue",
               }}
             >
-              <Text style={styles.logoText}>Logo</Text>
+              <Text style={styles.extraInfo}>Logo</Text>
             </View>
-            <View style={{ alignSelf: "center", marginVertical: 12 }}>
+            <View style={styles.imageContainer}>
               <Image
-                source={{ uri: singleProduct.logo }}
+                resizeMode="cover"
                 style={styles.logoImage}
+                source={{ uri: singleProduct.logo }}
               />
             </View>
           </View>
-          <Text style={styles.dateText}>
-            Fecha de liberación: {singleProduct.date_release}
-          </Text>
-          <Text style={styles.dateText}>
-            Fecha de revisión: {singleProduct.date_revision}
-          </Text>
+
+          <View style={styles.infoField}>
+            <Text style={styles.extraInfo}>Fecha liberación</Text>
+            <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
+              [{singleProduct.date_release}]
+            </Text>
+          </View>
+
+          <View style={styles.infoField}>
+            <Text style={styles.extraInfo}>Fecha revisión</Text>
+            <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
+              [{singleProduct.date_revision}]
+            </Text>
+          </View>
         </View>
       </View>
     </View>
