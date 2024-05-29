@@ -8,7 +8,7 @@ import ProductFormScreen from "./src/Presentation/views/ProductForm/ProductForm"
 
 export type RootStackParamList = {
   ProductListScreen: undefined;
-  ProductDetailScreen: undefined;
+  ProductDetailScreen: { id: string }; // Añadir el parámetro "id"
   ProductFormScreen: undefined;
 };
 

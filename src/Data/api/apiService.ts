@@ -20,3 +20,14 @@ export const createProduct = async (productData: ProductInterface) => {
     throw new Error("Error creating product: " + error);
   }
 };
+
+export const getSingleProduct = async (productId: string) => {
+  try {
+    const response = await axios.get<ProductInterface>(
+      `${BASE_URL}/${productId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error("Error fetching data: " + error);
+  }
+};

@@ -37,9 +37,7 @@ const ProductListScreen = ({ navigation, route }: Props) => {
   const fetchProducts = async () => {
     setIsFetching(true);
     try {
-      console.log("Fetching products...");
       const response = await getProducts();
-      console.log("response", response);
       setProducts(response);
       setFilteredProducts(response);
     } catch (error) {
@@ -81,7 +79,9 @@ const ProductListScreen = ({ navigation, route }: Props) => {
         <Text style={{ color: "#A0A0A0" }}>ID: {item.id}</Text>
       </View>
       <TouchableOpacity
-        onPress={() => navigation.navigate("ProductDetailScreen")}
+        onPress={() =>
+          navigation.navigate("ProductDetailScreen", { id: item.id })
+        }
       >
         <Text style={styles.arrowButton}>{">"}</Text>
       </TouchableOpacity>

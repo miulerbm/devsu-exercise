@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface ButtonProps {
   title: string;
-  type?: "primary" | "secondary";
+  type?: "primary" | "secondary" | "danger";
   isDisabled?: boolean;
   onPress?: () => void;
 }
@@ -14,11 +14,23 @@ const Button = ({
   isDisabled = false,
   onPress,
 }: ButtonProps) => {
-  let backgroundColor = type === "primary" ? "#FFE633" : "#EBEDEF";
-  if (isDisabled) backgroundColor = "#E5E5E5"; // Se corrigió la sintaxis
+  let backgroundColor =
+    type === "primary"
+      ? "#FFE633"
+      : type === "secondary"
+      ? "#EBEDEF"
+      : type === "danger"
+      ? "#FF0000"
+      : "#FFE633";
+
+  if (isDisabled) backgroundColor = "#E5E5E5";
 
   let textColor = "#000080";
-  if (isDisabled) textColor = "#A0A0A0"; // Se corrigió la sintaxis
+  if (isDisabled) {
+    textColor = "#A0A0A0";
+  } else if (type === "danger") {
+    textColor = "#FFFFFF";
+  }
 
   return (
     <TouchableOpacity onPress={onPress} disabled={isDisabled}>
