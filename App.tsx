@@ -8,8 +8,8 @@ import ProductFormScreen from "./src/Presentation/views/ProductForm/ProductForm"
 
 export type RootStackParamList = {
   ProductListScreen: undefined;
-  ProductDetailScreen: { id: string }; // Añadir el parámetro "id"
-  ProductFormScreen: undefined;
+  ProductDetailScreen: { id: string };
+  ProductFormScreen: { id?: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 10,
     borderWidth: 2,
-    // padding: 10,
     borderColor: "black",
     gap: 20,
   },

@@ -101,7 +101,13 @@ const ProductDetailScreen = ({ navigation, route }: Props) => {
         </View>
       </View>
       <View style={{ gap: 16 }}>
-        <Button title="Editar" type="secondary" />
+        <Button
+          title="Editar"
+          type="secondary"
+          onPress={() =>
+            navigation.navigate("ProductFormScreen", { id: product?.id })
+          }
+        />
         <Button title="Eliminar" type="danger" />
       </View>
     </View>

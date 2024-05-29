@@ -7,21 +7,18 @@ const ProductListStyles = StyleSheet.create({
     backgroundColor: "#fff",
     gap: 16,
   },
-
   formContainer: {
     flex: 1,
-    marginTop: 20,
     gap: 10,
+    alignItems: "center",
+    marginBottom: 16,
   },
-
   formField: {
     gap: 4,
   },
-
   inputContainer: {
     marginTop: 5,
   },
-
   input: {
     width: 300,
     borderWidth: 1,
@@ -33,7 +30,6 @@ const ProductListStyles = StyleSheet.create({
     color: "#333",
     textAlignVertical: "top",
   },
-
   errorMessage: {
     color: "red",
     marginTop: 5,
@@ -48,6 +44,10 @@ const ProductListStyles = StyleSheet.create({
     color: "#333",
     textAlignVertical: "top",
     paddingBottom: 10,
+  },
+  buttonContainer: {
+    marginTop: 20,
+    gap: 10,
   },
 });
 

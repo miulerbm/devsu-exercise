@@ -137,11 +137,13 @@ const ProductListScreen = ({ navigation, route }: Props) => {
         </View>
       )}
 
-      <Button
-        title="Agregar"
-        onPress={() => navigation.navigate("ProductFormScreen")}
-        isDisabled={isFetching}
-      />
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Agregar"
+          onPress={() => navigation.navigate("ProductFormScreen", {})}
+          isDisabled={isFetching}
+        />
+      </View>
     </View>
   );
 };

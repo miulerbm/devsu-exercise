@@ -7,7 +7,6 @@ const ProductListStyles = StyleSheet.create({
     backgroundColor: "#fff",
     gap: 16,
   },
-
   searchInput: {
     height: 40,
     borderColor: "#ccc",
@@ -51,6 +50,9 @@ const ProductListStyles = StyleSheet.create({
     marginTop: 20,
     fontSize: 16,
     color: "gray",
+  },
+  buttonContainer: {
+    marginTop: 20,
   },
 });
 
