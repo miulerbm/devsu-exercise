@@ -29,8 +29,4 @@ export const formSchema = z.object({
   date_revision: z
     .date({ required_error: "Debe seleccionar una fecha" })
     .min(new Date("1900-01-01"), "La fecha de liberación no es válida"),
-
-  // .max(new Date(), "La fecha de liberación no puede estar en el futuro"),
-
-  // fechaRevision: z.date(),
 });

@@ -25,7 +25,6 @@ const ProductListStyles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 8,
     marginHorizontal: 1,
-    // marginBottom: 8,
     marginVertical: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -37,6 +36,21 @@ const ProductListStyles = StyleSheet.create({
     fontSize: 24,
     color: "#A0A0A0",
     textAlignVertical: "center",
+  },
+  flatListContainer: {
+    flex: 1,
+    backgroundColor: "pink",
+  },
+  loadingIndicator: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noProductsText: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
+    color: "gray",
   },
 });
 

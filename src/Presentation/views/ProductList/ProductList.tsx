@@ -1,7 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RootStackParamList } from "../../../../App";
 import {
+  ActivityIndicator,
   FlatList,
   RefreshControl,
   Text,
@@ -13,118 +14,66 @@ import styles from "./Styles";
 import Header from "../../components/Header";
 import GrayDivider from "../../components/GrayDivider";
 import Button from "../../components/Button";
+import { getProducts } from "../../../Data/api/apiService";
+import { ProductInterface } from "../../../Data/types/types";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProductListScreen"> {}
 
-const productData = [
-  {
-    id: "string1",
-    name: "Nombre",
-    description: "string",
-    logo: "string",
-    date_release: "Date",
-    date_revision: "Date",
-  },
-  {
-    id: "string2",
-    name: "Nombre",
-    description: "string",
-    logo: "string",
-    date_release: "Date",
-    date_revision: "Date",
-  },
-  {
-    id: "string3",
-    name: "Nombre",
-    description: "string",
-    logo: "string",
-    date_release: "Date",
-    date_revision: "Date",
-  },
-  {
-    id: "string4",
-    name: "Nombre",
-    description: "string",
-    logo: "string",
-    date_release: "Date",
-    date_revision: "Date",
-  },
-  {
-    id: "string5",
-    name: "Nombre",
-    description: "string",
-    logo: "string",
-    date_release: "Date",
-    date_revision: "Date",
-  },
-  {
-    id: "string6",
-    name: "Nombre",
-    description: "string",
-    logo: "string",
-    date_release: "Date",
-    date_revision: "Date",
-  },
-  {
-    id: "string7",
-    name: "Nombre",
-    description: "string",
-    logo: "string",
-    date_release: "Date",
-    date_revision: "Date",
-  },
-  {
-    id: "string8",
-    name: "Nombre",
-    description: "string",
-    logo: "string",
-    date_release: "Date",
-    date_revision: "Date",
-  },
-  {
-    id: "string9",
-    name: "Nombre",
-    description: "string",
-    logo: "string",
-    date_release: "Date",
-    date_revision: "Date",
-  },
-  {
-    id: "string10",
-    name: "Nombre",
-    description: "string",
-    logo: "string",
-    date_release: "Date",
-    date_revision: "Date",
-  },
-];
-
 const ProductListScreen = ({ navigation, route }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState(productData);
+  const [products, setProducts] = useState<ProductInterface[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductInterface[]>(
+    []
+  );
   const [refreshing, setRefreshing] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
 
-  const handleSearch = (text: string) => {
-    setSearchQuery(text);
-    if (text) {
-      setFilteredProducts(
-        productData.filter((product) => product.id.includes(text))
-      );
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    setIsFetching(true);
+    try {
+      console.log("Fetching products...");
+      const response = await getProducts();
+      console.log("response", response);
+      setProducts(response);
+      setFilteredProducts(response);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    } finally {
+      setIsFetching(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    applySearchFilter();
+  }, [searchQuery, products]);
+
+  const applySearchFilter = () => {
+    if (!searchQuery) {
+      setFilteredProducts(products);
     } else {
-      setFilteredProducts(productData);
+      const filtered = products.filter(
+        (product) =>
+          product.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredProducts(filtered);
     }
   };
 
   const handleRefresh = () => {
     setRefreshing(true);
     setTimeout(() => {
-      setFilteredProducts(productData);
-      setRefreshing(false);
+      fetchProducts();
     }, 2000);
   };
 
-  const renderProduct = ({ item }: any) => (
+  const renderProduct = ({ item }: { item: ProductInterface }) => (
     <View style={styles.productItem}>
       <View>
         <Text style={{ color: "black" }}>{item.name}</Text>
@@ -144,24 +93,44 @@ const ProductListScreen = ({ navigation, route }: Props) => {
       <GrayDivider />
       <TextInput
         style={styles.searchInput}
-        placeholder="Search"
+        placeholder="Search..."
         value={searchQuery}
-        onChangeText={handleSearch}
+        onChangeText={setSearchQuery}
       />
 
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={filteredProducts}
-        renderItem={renderProduct}
-        keyExtractor={(item) => item.id}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-        }
-      />
+      {isFetching ? (
+        <ActivityIndicator
+          style={styles.loadingIndicator}
+          size="large"
+          color="#0000ff"
+        />
+      ) : filteredProducts.length === 0 ? (
+        <View style={{ flex: 1 }}>
+          <Text style={styles.noProductsText}>
+            Sin resultados (Agregue un producto)
+          </Text>
+        </View>
+      ) : (
+        <View style={{ flex: 1 }}>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={filteredProducts}
+            renderItem={renderProduct}
+            keyExtractor={(item) => item.id}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+              />
+            }
+          />
+        </View>
+      )}
 
       <Button
         title="Agregar"
         onPress={() => navigation.navigate("ProductFormScreen")}
+        isDisabled={isFetching}
       />
     </View>
   );

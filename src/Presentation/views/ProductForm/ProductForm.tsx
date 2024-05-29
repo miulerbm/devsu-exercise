@@ -20,6 +20,7 @@ import { formSchema } from "../../../Data/validators/validators";
 import Button from "../../components/Button";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { createProduct } from "../../../Data/api/apiService";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProductFormScreen"> {}
@@ -52,9 +53,23 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
     android: 20,
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     Alert.alert("Successful", JSON.stringify(data));
-    console.log("data", data);
+    const formattedData = {
+      ...data,
+      date_release: moment(data.date_release).format("YYYY-MM-DD"),
+      date_revision: moment(data.date_revision).format("YYYY-MM-DD"),
+    };
+    console.log("formattedData", formattedData);
+
+    try {
+      const response = await createProduct(formattedData);
+      console.log("Response:", response);
+      Alert.alert("Producto creado exitosamente");
+    } catch (error) {
+      Alert.alert("Hubo un error al crear el producto");
+      console.error("Error:", error);
+    }
   };
 
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -195,7 +210,7 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
                     field: { onChange, value },
                     fieldState: { error },
                   }) => (
-                    <View>
+                    <View style={styles.inputContainer}>
                       <TouchableOpacity onPress={() => setShowDatePicker(true)}>
                         <View style={styles.inputDate}>
                           <Text>
