@@ -12,7 +12,7 @@ import {
 import styles from "./Styles";
 import Header from "../../components/Header";
 import GrayDivider from "../../components/GrayDivider";
-import { ProductInterface } from "../../../Data/types";
+import Button from "../../components/Button";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProductListScreen"> {}
@@ -158,6 +158,11 @@ const ProductListScreen = ({ navigation, route }: Props) => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }
+        />
+
+        <Button
+          title="Agregar"
+          onPress={() => navigation.navigate("ProductFormScreen")}
         />
       </View>
     </View>

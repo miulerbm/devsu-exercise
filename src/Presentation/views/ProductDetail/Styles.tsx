@@ -10,7 +10,7 @@ const ProductDetailStyles = StyleSheet.create({
     flex: 1,
     margin: 10,
     borderWidth: 2,
-    padding: 10,
+    padding: 20,
     borderColor: "black",
   },
   infoField: {

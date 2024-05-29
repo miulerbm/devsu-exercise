@@ -4,10 +4,12 @@ import { StyleSheet, Text, View } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProductListScreen from "./src/Presentation/views/ProductList/ProductList";
 import ProductDetailScreen from "./src/Presentation/views/ProductDetail/ProductDetail";
+import ProductFormScreen from "./src/Presentation/views/ProductForm/ProductForm";
 
 export type RootStackParamList = {
   ProductListScreen: undefined;
   ProductDetailScreen: undefined;
+  ProductFormScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -26,6 +28,13 @@ export default function App() {
         <Stack.Screen
           name="ProductDetailScreen"
           component={ProductDetailScreen}
+          options={({ route, navigation }) => ({
+            headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name="ProductFormScreen"
+          component={ProductFormScreen}
           options={({ route, navigation }) => ({
             headerShown: false,
           })}
