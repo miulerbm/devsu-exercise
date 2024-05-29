@@ -16,39 +16,50 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="ProductListScreen"
-          component={ProductListScreen}
-          options={({ route, navigation }) => ({
-            headerShown: false,
-          })}
-        />
-        <Stack.Screen
-          name="ProductDetailScreen"
-          component={ProductDetailScreen}
-          options={({ route, navigation }) => ({
-            headerShown: false,
-          })}
-        />
-        <Stack.Screen
-          name="ProductFormScreen"
-          component={ProductFormScreen}
-          options={({ route, navigation }) => ({
-            headerShown: false,
-          })}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={styles.layout}>
+      <View style={styles.container}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ animation: "none" }}>
+            <Stack.Screen
+              name="ProductListScreen"
+              component={ProductListScreen}
+              options={({ route, navigation }) => ({
+                headerShown: false,
+              })}
+            />
+            <Stack.Screen
+              name="ProductDetailScreen"
+              component={ProductDetailScreen}
+              options={({ route, navigation }) => ({
+                headerShown: false,
+              })}
+            />
+            <Stack.Screen
+              name="ProductFormScreen"
+              component={ProductFormScreen}
+              options={({ route, navigation }) => ({
+                headerShown: false,
+              })}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  layout: {
+    flex: 1,
+    marginTop: 25,
+    padding: 10,
+  },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    margin: 10,
+    borderWidth: 2,
+    // padding: 10,
+    borderColor: "black",
+    gap: 20,
   },
 });

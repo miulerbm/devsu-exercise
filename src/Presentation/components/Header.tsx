@@ -9,8 +9,8 @@ interface HeaderProps {
 const Header = ({ title }: HeaderProps) => {
   return (
     <View style={styles.headerContainer}>
-      <Icon name="money" />
-      <Text>{title}</Text>
+      <Icon color={"#000080"} name="money" />
+      <Text style={{ fontWeight: "bold", color: "#000080" }}>{title}</Text>
     </View>
   );
 };

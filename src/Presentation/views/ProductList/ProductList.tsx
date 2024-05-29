@@ -139,32 +139,30 @@ const ProductListScreen = ({ navigation, route }: Props) => {
   );
 
   return (
-    <View style={styles.layout}>
-      <View style={styles.container}>
-        <Header title="BANCO" />
-        <GrayDivider />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search"
-          value={searchQuery}
-          onChangeText={handleSearch}
-        />
+    <View style={styles.screenContainer}>
+      <Header title="BANCO" />
+      <GrayDivider />
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search"
+        value={searchQuery}
+        onChangeText={handleSearch}
+      />
 
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={filteredProducts}
-          renderItem={renderProduct}
-          keyExtractor={(item) => item.id}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-          }
-        />
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={filteredProducts}
+        renderItem={renderProduct}
+        keyExtractor={(item) => item.id}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      />
 
-        <Button
-          title="Agregar"
-          onPress={() => navigation.navigate("ProductFormScreen")}
-        />
-      </View>
+      <Button
+        title="Agregar"
+        onPress={() => navigation.navigate("ProductFormScreen")}
+      />
     </View>
   );
 };

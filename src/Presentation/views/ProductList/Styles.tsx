@@ -1,18 +1,11 @@
 import { StyleSheet } from "react-native";
 
 const ProductListStyles = StyleSheet.create({
-  layout: {
+  screenContainer: {
     flex: 1,
-    marginTop: 25,
-    padding: 10,
-  },
-  container: {
-    flex: 1,
-    margin: 10,
-    borderWidth: 2,
     padding: 20,
-    borderColor: "black",
-    gap: 20,
+    backgroundColor: "#fff",
+    gap: 16,
   },
 
   searchInput: {
@@ -22,6 +15,7 @@ const ProductListStyles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     marginVertical: 16,
+    marginHorizontal: 1,
   },
   productItem: {
     flexDirection: "row",
@@ -30,7 +24,9 @@ const ProductListStyles = StyleSheet.create({
     padding: 12,
     backgroundColor: "#fff",
     borderRadius: 8,
-    marginBottom: 8,
+    marginHorizontal: 1,
+    // marginBottom: 8,
+    marginVertical: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,

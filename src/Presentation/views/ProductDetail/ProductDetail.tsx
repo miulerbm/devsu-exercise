@@ -21,59 +21,57 @@ const singleProduct = {
 
 const ProductDetailScreen = () => {
   return (
-    <View style={styles.layout}>
-      <View style={styles.container}>
-        <Header title="BANCO" />
-        <GrayDivider />
-        <View style={styles.idContainer}>
-          <Text style={styles.idText}>ID: {singleProduct.id}</Text>
-          <Text style={styles.extraInfo}>Información extra</Text>
+    <View style={styles.screenContainer}>
+      <Header title="BANCO" />
+      <GrayDivider />
+      <View style={styles.idContainer}>
+        <Text style={styles.idText}>ID: {singleProduct.id}</Text>
+        <Text style={styles.extraInfo}>Información extra</Text>
+      </View>
+
+      <View style={styles.productDetailsContainer}>
+        <View style={styles.infoField}>
+          <Text style={styles.extraInfo}>Nombre</Text>
+          <Text style={{ fontWeight: "bold" }}>[{singleProduct.name}]</Text>
         </View>
 
-        <View style={styles.productDetailsContainer}>
-          <View style={styles.infoField}>
-            <Text style={styles.extraInfo}>Nombre</Text>
-            <Text style={{ fontWeight: "bold" }}>[{singleProduct.name}]</Text>
-          </View>
+        <View style={styles.infoField}>
+          <Text style={styles.extraInfo}>Descripción</Text>
+          <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
+            [{singleProduct.description}]
+          </Text>
+        </View>
 
-          <View style={styles.infoField}>
-            <Text style={styles.extraInfo}>Descripción</Text>
-            <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
-              [{singleProduct.description}]
-            </Text>
+        <View style={styles.logoContainer}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Text style={styles.extraInfo}>Logo</Text>
           </View>
+          <View style={styles.imageContainer}>
+            <Image
+              resizeMode="cover"
+              style={styles.logoImage}
+              source={{ uri: singleProduct.logo }}
+            />
+          </View>
+        </View>
 
-          <View style={styles.logoContainer}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-start",
-              }}
-            >
-              <Text style={styles.extraInfo}>Logo</Text>
-            </View>
-            <View style={styles.imageContainer}>
-              <Image
-                resizeMode="cover"
-                style={styles.logoImage}
-                source={{ uri: singleProduct.logo }}
-              />
-            </View>
-          </View>
+        <View style={styles.infoField}>
+          <Text style={styles.extraInfo}>Fecha liberación</Text>
+          <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
+            [{singleProduct.date_release}]
+          </Text>
+        </View>
 
-          <View style={styles.infoField}>
-            <Text style={styles.extraInfo}>Fecha liberación</Text>
-            <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
-              [{singleProduct.date_release}]
-            </Text>
-          </View>
-
-          <View style={styles.infoField}>
-            <Text style={styles.extraInfo}>Fecha revisión</Text>
-            <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
-              [{singleProduct.date_revision}]
-            </Text>
-          </View>
+        <View style={styles.infoField}>
+          <Text style={styles.extraInfo}>Fecha revisión</Text>
+          <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
+            [{singleProduct.date_revision}]
+          </Text>
         </View>
       </View>
     </View>

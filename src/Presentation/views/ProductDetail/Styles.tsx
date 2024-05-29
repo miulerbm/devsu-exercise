@@ -1,17 +1,11 @@
 import { StyleSheet } from "react-native";
 
 const ProductDetailStyles = StyleSheet.create({
-  layout: {
+  screenContainer: {
     flex: 1,
-    marginTop: 25,
-    padding: 10,
-  },
-  container: {
-    flex: 1,
-    margin: 10,
-    borderWidth: 2,
     padding: 20,
-    borderColor: "black",
+    backgroundColor: "#fff",
+    gap: 16,
   },
   infoField: {
     flexDirection: "row",
