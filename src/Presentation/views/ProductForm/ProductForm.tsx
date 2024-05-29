@@ -35,6 +35,8 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
     date_revision: null,
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { control, handleSubmit, setValue, reset, watch, trigger } = useForm({
     resolver: zodResolver(formSchema),
   });
@@ -54,21 +56,23 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
   });
 
   const onSubmit = async (data: any) => {
-    Alert.alert("Successful", JSON.stringify(data));
-    const formattedData = {
-      ...data,
-      date_release: moment(data.date_release).format("YYYY-MM-DD"),
-      date_revision: moment(data.date_revision).format("YYYY-MM-DD"),
-    };
-    console.log("formattedData", formattedData);
-
     try {
+      setIsLoading(true);
+      const formattedData = {
+        ...data,
+        date_release: moment(data.date_release).format("YYYY-MM-DD"),
+        date_revision: moment(data.date_revision).format("YYYY-MM-DD"),
+      };
+      console.log("formattedData", formattedData);
+
       const response = await createProduct(formattedData);
       console.log("Response:", response);
       Alert.alert("Producto creado exitosamente");
-    } catch (error) {
-      Alert.alert("Hubo un error al crear el producto");
+    } catch (error: any) {
       console.error("Error:", error);
+      Alert.alert("Hubo un error al crear el producto");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -272,7 +276,11 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
         </KeyboardAvoidingView>
       </ScrollView>
       <View style={{ gap: 16 }}>
-        <Button title="Enviar" onPress={handleSubmit(onSubmit)} />
+        <Button
+          title="Enviar"
+          onPress={handleSubmit(onSubmit)}
+          isDisabled={isLoading}
+        />
         <Button title="Reiniciar" onPress={handleReset} type="secondary" />
       </View>
     </View>

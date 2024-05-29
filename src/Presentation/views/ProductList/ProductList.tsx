@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -106,9 +107,18 @@ const ProductListScreen = ({ navigation, route }: Props) => {
         />
       ) : filteredProducts.length === 0 ? (
         <View style={{ flex: 1 }}>
-          <Text style={styles.noProductsText}>
-            Sin resultados (Agregue un producto)
-          </Text>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+              />
+            }
+          >
+            <Text style={styles.noProductsText}>
+              Sin resultados (Agregue un producto o Deslice para cargar más)
+            </Text>
+          </ScrollView>
         </View>
       ) : (
         <View style={{ flex: 1 }}>
