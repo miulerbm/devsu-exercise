@@ -59,13 +59,18 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
     fetchProducts();
   }, []);
 
-  console.log(products);
+  console.log("products", products);
 
   const fetchProducts = async () => {
     try {
       setIsLoading(true);
       const response = await getProducts();
-      setProducts(response!);
+      if (response) {
+        setProducts(response);
+      } else {
+        setProducts([]);
+      }
+      console.log("response", response);
     } catch (error) {
       setProducts([]);
     } finally {
