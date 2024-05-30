@@ -86,7 +86,7 @@ const ProductListScreen = ({ navigation }: Props) => {
         onChangeText={setSearchQuery}
       />
 
-      {filteredProducts.length === 0 ? (
+      {!filteredProducts || filteredProducts.length === 0 ? (
         <View style={{ flex: 1 }}>
           <ScrollView
             refreshControl={

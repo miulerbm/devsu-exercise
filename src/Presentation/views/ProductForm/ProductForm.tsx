@@ -33,8 +33,6 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
     handleCreateProduct,
     handleUpdateProduct,
     handleGetSingleProduct,
-    setShouldFetchProducts,
-    setShouldFetchSingleProduct,
   } = useProducts();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -106,11 +104,8 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
 
       if (isEditing) {
         handleUpdateProduct(formattedData);
-        setShouldFetchSingleProduct(true);
-        setShouldFetchProducts(true);
       } else {
         handleCreateProduct(formattedData);
-        setShouldFetchProducts(true);
       }
     } catch (error: any) {
       console.error("Error:", error);

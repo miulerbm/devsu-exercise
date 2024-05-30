@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { ProductInterface } from "../types/types";
 import { Alert } from "react-native";
 
@@ -26,7 +26,7 @@ const handleError = (error: unknown, action: string) => {
   } else {
     Alert.alert(`Error al ${action}`, `Error desconocido: ${String(error)}`);
   }
-  throw new Error(`Error al ${action}: ${error}`);
+  // throw new Error(`Error al ${action}: ${error}`);
 };
 
 export const getProducts = async () => {

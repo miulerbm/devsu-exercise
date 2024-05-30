@@ -25,8 +25,6 @@ interface ProductsContextProps {
   >;
   fetchProducts: () => Promise<void>;
   handleGetSingleProduct: (productId: string) => Promise<void>;
-  setShouldFetchSingleProduct: (value: boolean) => void;
-  setShouldFetchProducts: (value: boolean) => void;
   handleCreateProduct: (productData: ProductInterface) => Promise<void>;
   handleUpdateProduct: (productData: ProductInterface) => Promise<void>;
   handleDeleteProduct: (productId: string) => Promise<void>;
@@ -57,25 +55,9 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
   );
   const [isLoading, setIsLoading] = useState(false);
 
-  const [shouldFetchProducts, setShouldFetchProducts] = useState(false);
-  const [shouldFetchSingleProduct, setShouldFetchSingleProduct] =
-    useState(false);
-
-  //GET REQUESTS:
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  useEffect(() => {
-    if (shouldFetchProducts) {
-      fetchProducts();
-      setShouldFetchProducts(false);
-    }
-    if (shouldFetchSingleProduct) {
-      fetchSingleProduct();
-      setShouldFetchSingleProduct(false);
-    }
-  }, [shouldFetchProducts, shouldFetchSingleProduct]);
 
   const fetchProducts = async () => {
     try {
@@ -123,8 +105,12 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
         Alert.alert("Ya existe un producto con ese ID!");
         return;
       } else {
-        await createProduct(productData);
-        setShouldFetchProducts(true);
+        const createdProduct = await createProduct(productData);
+
+        if (createdProduct) {
+          fetchSingleProduct();
+          fetchProducts();
+        }
       }
     } catch (error) {
       console.error("Error creating product: ", error);
@@ -142,9 +128,11 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
         return;
       }
       setIsLoading(true);
-      await updateProduct(productData);
-
-      setShouldFetchSingleProduct(true);
+      const updatedProduct = await updateProduct(productData);
+      if (updatedProduct) {
+        fetchSingleProduct();
+        fetchProducts();
+      }
     } catch (error) {
       console.error("Error updating product: ", error);
     } finally {
@@ -156,9 +144,8 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
     try {
       setIsLoading(true);
       await deleteProduct(productId);
-
       setSingleProduct(null);
-      setShouldFetchProducts(true);
+      fetchProducts();
     } catch (error) {
       console.error("Error deleting product: ", error);
     } finally {
@@ -174,8 +161,6 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
         isLoading,
         setSingleProduct,
         fetchProducts,
-        setShouldFetchProducts,
-        setShouldFetchSingleProduct,
         handleCreateProduct,
         handleUpdateProduct,
         handleGetSingleProduct,
