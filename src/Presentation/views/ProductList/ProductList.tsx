@@ -29,7 +29,7 @@ const ProductListScreen = ({ navigation }: Props) => {
   const [refreshing, setRefreshing] = useState(false);
   const { products, isLoading, setSingleProduct, fetchProducts } =
     useProducts();
-  console.log("products", products);
+  // console.log("products", products);
 
   useEffect(() => {
     if (products) {

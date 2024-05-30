@@ -14,8 +14,12 @@ interface Props
   extends StackScreenProps<RootStackParamList, "ProductDetailScreen"> {}
 
 const ProductDetailScreen = ({ navigation, route }: Props) => {
-  const { singleProduct, handleGetSingleProduct, handleDeleteProduct } =
-    useProducts();
+  const {
+    singleProduct,
+    handleGetSingleProduct,
+    isLoading,
+    handleDeleteProduct,
+  } = useProducts();
   let paramId = null;
 
   const handleDelete = (productId: string) => {
@@ -100,7 +104,11 @@ const ProductDetailScreen = ({ navigation, route }: Props) => {
         <Button
           title="Eliminar"
           type="danger"
-          onPress={() => handleDelete(singleProduct.id)}
+          isDisabled={singleProduct ? false : true}
+          onPress={() => {
+            handleDelete(singleProduct.id),
+              navigation.navigate("ProductListScreen");
+          }}
         />
       </View>
     </View>

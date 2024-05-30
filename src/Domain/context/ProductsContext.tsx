@@ -143,6 +143,7 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
       setIsLoading(true);
       await deleteProduct(productId);
       setSingleProduct(null);
+      setShouldFetchProducts(true);
     } catch (error) {
       console.error("Error deleting product: ", error);
     } finally {
