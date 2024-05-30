@@ -99,6 +99,7 @@ export const checkProductExists = async (productId: string) => {
     );
     return response.data;
   } catch (error) {
-    handleError(error, "verificar la existencia del producto");
+    // handleError(error, "verificar la existencia del producto");
+    return;
   }
 };

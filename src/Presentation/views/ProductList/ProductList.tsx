@@ -40,15 +40,18 @@ const ProductListScreen = ({ navigation }: Props) => {
   }, [searchQuery]);
 
   const applySearchFilter = () => {
-    if (!searchQuery) {
-      setFilteredProducts(products);
-    } else {
-      const filtered = products.filter(
-        (product) =>
-          product.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          product.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredProducts(filtered);
+    console.log(products);
+    if (products) {
+      if (!searchQuery) {
+        setFilteredProducts(products);
+      } else {
+        const filtered = products.filter(
+          (product) =>
+            product.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            product.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredProducts(filtered);
+      }
     }
   };
 

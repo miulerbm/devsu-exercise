@@ -17,7 +17,7 @@ import { ProductInterface } from "../../Data/types/types";
 import { Alert } from "react-native";
 
 interface ProductsContextProps {
-  products: ProductInterface[];
+  products: ProductInterface[] | null;
   singleProduct: ProductInterface | null;
   isLoading: boolean;
   setSingleProduct: React.Dispatch<
@@ -58,6 +58,8 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  console.log(products);
 
   const fetchProducts = async () => {
     try {
