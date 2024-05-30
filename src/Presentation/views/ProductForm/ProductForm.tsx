@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import styles from "./Styles";
+import { zodResolver } from "@hookform/resolvers/zod";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParamList } from "../../../../App";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { Control, Controller, FieldValues, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -13,17 +14,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Control, Controller, FieldValues, useForm } from "react-hook-form";
-import Header from "../../components/Header";
-import GrayDivider from "../../components/GrayDivider";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { RootStackParamList } from "../../../../App";
 import { formSchema } from "../../../Data/validators/validators";
-import Button from "../../components/Button";
-import moment from "moment";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { createProduct, getSingleProduct } from "../../../Data/api/apiService";
-import { ProductInterface } from "../../../Data/types/types";
 import { useProducts } from "../../../Domain/context/ProductsContext";
+import Button from "../../components/Button";
+import GrayDivider from "../../components/GrayDivider";
+import Header from "../../components/Header";
+import styles from "./Styles";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProductFormScreen"> {}
@@ -49,9 +46,6 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
   let paramId = null;
 
   useEffect(() => {
-    console.log("id", route.params.id);
-    console.log("isEditing", isEditing);
-
     if (route.params.id) {
       paramId = route.params.id;
       console.log("existe param id");
@@ -338,7 +332,7 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
 
   return (
     <View style={styles.screenContainer}>
-      <Header title="BANCO" />
+      <Header title="BANCO" goBack={true} />
       <GrayDivider />
       <View>
         <Text

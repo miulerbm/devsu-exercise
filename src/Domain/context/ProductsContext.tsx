@@ -1,18 +1,18 @@
 import React, {
+  ReactNode,
   createContext,
   useContext,
   useEffect,
   useState,
-  ReactNode,
 } from "react";
-import { ProductInterface } from "../../Data/types/types";
 import {
-  getProducts,
   createProduct,
+  deleteProduct,
+  getProducts,
   getSingleProduct,
   updateProduct,
-  deleteProduct,
 } from "../../Data/api/apiService";
+import { ProductInterface } from "../../Data/types/types";
 
 interface ProductsContextProps {
   products: ProductInterface[];

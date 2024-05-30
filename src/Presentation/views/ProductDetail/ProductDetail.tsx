@@ -1,14 +1,12 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParamList } from "../../../../App";
-import styles from "./Styles";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { ActivityIndicator, Image, Text, View } from "react-native";
-import Header from "../../components/Header";
-import GrayDivider from "../../components/GrayDivider";
-import { ProductInterface } from "../../../Data/types/types";
-import { getSingleProduct } from "../../../Data/api/apiService";
-import Button from "../../components/Button";
+import { RootStackParamList } from "../../../../App";
 import { useProducts } from "../../../Domain/context/ProductsContext";
+import Button from "../../components/Button";
+import GrayDivider from "../../components/GrayDivider";
+import Header from "../../components/Header";
+import styles from "./Styles";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProductDetailScreen"> {}
@@ -34,12 +32,24 @@ const ProductDetailScreen = ({ navigation, route }: Props) => {
   }, [route.params.id]);
 
   if (!singleProduct) {
-    return <ActivityIndicator size="large" />;
+    return (
+      <View
+        style={{
+          justifyContent: "center",
+          alignSelf: "center",
+          flex: 1,
+          alignItems: "center",
+        }}
+      >
+        <ActivityIndicator size="large" color="#A0A0A0" />
+        <Text>Espere...</Text>
+      </View>
+    );
   }
 
   return (
     <View style={styles.screenContainer}>
-      <Header title="BANCO" />
+      <Header title="BANCO" goBack={true} />
       <GrayDivider />
       <View style={{ flex: 1 }}>
         <View style={styles.idContainer}>

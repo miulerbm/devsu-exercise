@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
 import { StackScreenProps } from "@react-navigation/stack";
+import React, { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
   FlatList,
   RefreshControl,
   ScrollView,
@@ -11,12 +10,12 @@ import {
   View,
 } from "react-native";
 import { RootStackParamList } from "../../../../App";
-import styles from "./Styles";
-import Header from "../../components/Header";
-import GrayDivider from "../../components/GrayDivider";
-import Button from "../../components/Button";
-import { useProducts } from "../../../Domain/context/ProductsContext";
 import { ProductInterface } from "../../../Data/types/types";
+import { useProducts } from "../../../Domain/context/ProductsContext";
+import Button from "../../components/Button";
+import GrayDivider from "../../components/GrayDivider";
+import Header from "../../components/Header";
+import styles from "./Styles";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProductListScreen"> {}
@@ -29,7 +28,6 @@ const ProductListScreen = ({ navigation }: Props) => {
   const [refreshing, setRefreshing] = useState(false);
   const { products, isLoading, setSingleProduct, fetchProducts } =
     useProducts();
-  // console.log("products", products);
 
   useEffect(() => {
     if (products) {
