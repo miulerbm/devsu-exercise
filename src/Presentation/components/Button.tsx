@@ -37,7 +37,9 @@ const Button = ({
       <View
         style={[styles.buttonContainer, { backgroundColor: backgroundColor }]}
       >
-        <Text style={{ fontWeight: "bold", color: textColor }}>{title}</Text>
+        <Text style={{ fontWeight: "bold", color: textColor }}>
+          {isDisabled ? "Espere..." : title}
+        </Text>
       </View>
     </TouchableOpacity>
   );

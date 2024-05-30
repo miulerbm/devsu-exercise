@@ -35,11 +35,22 @@ export const createProduct = async (productData: ProductInterface) => {
 export const updateProduct = async (productData: ProductInterface) => {
   try {
     const response = await axios.put<ProductInterface>(
-      `${BASE_URL}/${productData.id}`, // Asegúrate de que `productData` tenga un campo `id` que identifica el producto a actualizar
+      `${BASE_URL}/${productData.id}`,
       productData
     );
     return response.data;
   } catch (error) {
     throw new Error("Error al actualizar el producto: " + error);
+  }
+};
+
+export const deleteProduct = async (productId: string) => {
+  try {
+    const response = await axios.delete<ProductInterface>(
+      `${BASE_URL}/${productId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error("Error al eliminar el producto: " + error);
   }
 };

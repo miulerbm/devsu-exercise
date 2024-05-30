@@ -11,21 +11,23 @@ import {
   createProduct,
   getSingleProduct,
   updateProduct,
+  deleteProduct,
 } from "../../Data/api/apiService";
 
 interface ProductsContextProps {
   products: ProductInterface[];
   singleProduct: ProductInterface | null;
-  isFetchingProducts: boolean;
+  isLoading: boolean;
   setSingleProduct: React.Dispatch<
     React.SetStateAction<ProductInterface | null>
   >;
   fetchProducts: () => Promise<void>;
   handleGetSingleProduct: (productId: string) => Promise<void>;
-  setShouldFetchSingleProduct: (value: React.SetStateAction<boolean>) => void;
-  setShouldFetchProducts: (value: React.SetStateAction<boolean>) => void;
+  setShouldFetchSingleProduct: (value: boolean) => void;
+  setShouldFetchProducts: (value: boolean) => void;
   handleCreateProduct: (productData: ProductInterface) => Promise<void>;
   handleUpdateProduct: (productData: ProductInterface) => Promise<void>;
+  handleDeleteProduct: (productId: string) => Promise<void>;
 }
 
 const ProductsContext = createContext<ProductsContextProps | undefined>(
@@ -35,7 +37,7 @@ const ProductsContext = createContext<ProductsContextProps | undefined>(
 export const useProducts = () => {
   const context = useContext(ProductsContext);
   if (!context) {
-    throw new Error("useProducts deben estar dentro de un ProductsProvider");
+    throw new Error("useProducts debe estar dentro de un ProductsProvider");
   }
   return context;
 };
@@ -51,9 +53,7 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
   const [singleProduct, setSingleProduct] = useState<ProductInterface | null>(
     null
   );
-  const [isFetchingProducts, setIsFetchingProducts] = useState(false);
-  const [isFetchingSingleProducts, setIsFetchingSingleProduct] =
-    useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [shouldFetchProducts, setShouldFetchProducts] = useState(false);
   const [shouldFetchSingleProduct, setShouldFetchSingleProduct] =
@@ -68,68 +68,85 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
     if (shouldFetchProducts) {
       fetchProducts();
       setShouldFetchProducts(false);
-    } else if (shouldFetchSingleProduct) {
+    }
+    if (shouldFetchSingleProduct) {
       fetchSingleProduct();
       setShouldFetchSingleProduct(false);
     }
   }, [shouldFetchProducts, shouldFetchSingleProduct]);
 
   const fetchProducts = async () => {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        setIsFetchingProducts(true);
-        const response = await getProducts();
-        setProducts(response);
-        resolve();
-        setIsFetchingProducts(false);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-        reject();
-      }
-    });
+    try {
+      setIsLoading(true);
+      const response = await getProducts();
+      setProducts(response);
+    } catch (error) {
+      console.error("Error fetching products: ", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const fetchSingleProduct = async () => {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        setIsFetchingSingleProduct(true);
-        const response = await getSingleProduct(singleProduct?.id!);
-        setSingleProduct(response);
-        resolve();
-        setIsFetchingSingleProduct(false);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-        reject();
-      }
-    });
+    if (!singleProduct) return;
+    try {
+      setIsLoading(true);
+      const response = await getSingleProduct(singleProduct.id);
+      setSingleProduct(response);
+    } catch (error) {
+      console.error("Error fetching single product: ", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGetSingleProduct = async (productId: string) => {
     try {
+      setIsLoading(true);
       const product = await getSingleProduct(productId);
       setSingleProduct(product);
     } catch (error) {
       console.error("Error fetching single product:", error);
       setSingleProduct(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   //MUTATIONS:
   const handleCreateProduct = async (productData: ProductInterface) => {
     try {
+      setIsLoading(true);
       await createProduct(productData);
       setShouldFetchProducts(true);
     } catch (error) {
       console.error("Error creating product: ", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleUpdateProduct = async (productData: ProductInterface) => {
     try {
+      setIsLoading(true);
       await updateProduct(productData);
       setShouldFetchSingleProduct(true);
     } catch (error) {
       console.error("Error updating product: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteProduct = async (productId: string) => {
+    try {
+      setIsLoading(true);
+      await deleteProduct(productId);
+      setSingleProduct(null);
+    } catch (error) {
+      console.error("Error deleting product: ", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -138,14 +155,15 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
       value={{
         products,
         singleProduct,
-        isFetchingProducts,
-        handleUpdateProduct,
+        isLoading,
         setSingleProduct,
         fetchProducts,
         setShouldFetchProducts,
         setShouldFetchSingleProduct,
         handleCreateProduct,
+        handleUpdateProduct,
         handleGetSingleProduct,
+        handleDeleteProduct,
       }}
     >
       {children}

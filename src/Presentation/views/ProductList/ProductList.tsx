@@ -27,7 +27,7 @@ const ProductListScreen = ({ navigation }: Props) => {
     []
   );
   const [refreshing, setRefreshing] = useState(false);
-  const { products, isFetchingProducts, setSingleProduct, fetchProducts } =
+  const { products, isLoading, setSingleProduct, fetchProducts } =
     useProducts();
   console.log("products", products);
 
@@ -127,7 +127,7 @@ const ProductListScreen = ({ navigation }: Props) => {
             setSingleProduct(null);
             navigation.navigate("ProductFormScreen", {});
           }}
-          isDisabled={isFetchingProducts}
+          isDisabled={isLoading}
         />
       </View>
     </View>

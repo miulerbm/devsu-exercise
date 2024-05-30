@@ -32,6 +32,7 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
   const {
     singleProduct,
     setSingleProduct,
+    isLoading,
     handleCreateProduct,
     handleUpdateProduct,
     handleGetSingleProduct,
@@ -39,7 +40,6 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
     setShouldFetchSingleProduct,
   } = useProducts();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const { control, handleSubmit, setValue, reset, watch, trigger } = useForm({
@@ -85,7 +85,6 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
 
   const onSubmit = async (data: any) => {
     try {
-      setIsLoading(true);
       const formattedData = {
         ...data,
         date_release: moment(data.date_release).format("YYYY-MM-DD"),
@@ -95,14 +94,13 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
       if (isEditing) {
         handleUpdateProduct(formattedData);
         setShouldFetchSingleProduct(true);
+        setShouldFetchProducts(true);
       } else {
         handleCreateProduct(formattedData);
         setShouldFetchProducts(true);
       }
     } catch (error: any) {
       console.error("Error:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 

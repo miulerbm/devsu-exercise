@@ -14,8 +14,13 @@ interface Props
   extends StackScreenProps<RootStackParamList, "ProductDetailScreen"> {}
 
 const ProductDetailScreen = ({ navigation, route }: Props) => {
-  const { singleProduct, handleGetSingleProduct } = useProducts();
+  const { singleProduct, handleGetSingleProduct, handleDeleteProduct } =
+    useProducts();
   let paramId = null;
+
+  const handleDelete = (productId: string) => {
+    handleDeleteProduct(productId);
+  };
 
   useEffect(() => {
     if (route.params.id) {
@@ -92,7 +97,11 @@ const ProductDetailScreen = ({ navigation, route }: Props) => {
             navigation.navigate("ProductFormScreen", { id: singleProduct?.id })
           }
         />
-        <Button title="Eliminar" type="danger" />
+        <Button
+          title="Eliminar"
+          type="danger"
+          onPress={() => handleDelete(singleProduct.id)}
+        />
       </View>
     </View>
   );
