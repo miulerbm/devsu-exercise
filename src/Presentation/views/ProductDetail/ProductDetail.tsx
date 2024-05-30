@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Image, Text, View } from "react-native";
 import { RootStackParamList } from "../../../../App";
 import { useProducts } from "../../../Domain/context/ProductsContext";
@@ -7,22 +7,16 @@ import Button from "../../components/Button";
 import GrayDivider from "../../components/GrayDivider";
 import Header from "../../components/Header";
 import styles from "./Styles";
+import { DeleteModal } from "../ProductForm/components/DeleteModal";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProductDetailScreen"> {}
 
 const ProductDetailScreen = ({ navigation, route }: Props) => {
-  const {
-    singleProduct,
-    handleGetSingleProduct,
-    isLoading,
-    handleDeleteProduct,
-  } = useProducts();
+  const { singleProduct, handleGetSingleProduct } = useProducts();
   let paramId = null;
 
-  const handleDelete = (productId: string) => {
-    handleDeleteProduct(productId);
-  };
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     if (route.params.id) {
@@ -116,11 +110,16 @@ const ProductDetailScreen = ({ navigation, route }: Props) => {
           type="danger"
           isDisabled={singleProduct ? false : true}
           onPress={() => {
-            handleDelete(singleProduct.id),
-              navigation.navigate("ProductListScreen");
+            setModalVisible(true);
           }}
         />
       </View>
+      <DeleteModal
+        product={singleProduct}
+        modalUseState={modalVisible}
+        setModalUseState={setModalVisible}
+        navigation={navigation}
+      />
     </View>
   );
 };

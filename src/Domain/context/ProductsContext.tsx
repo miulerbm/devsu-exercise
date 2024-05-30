@@ -13,6 +13,7 @@ import {
   updateProduct,
 } from "../../Data/api/apiService";
 import { ProductInterface } from "../../Data/types/types";
+import { Alert } from "react-native";
 
 interface ProductsContextProps {
   products: ProductInterface[];
@@ -118,6 +119,7 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
     try {
       setIsLoading(true);
       await createProduct(productData);
+      Alert.alert("Se creó un nuevo producto!");
       setShouldFetchProducts(true);
     } catch (error) {
       console.error("Error creating product: ", error);
@@ -130,6 +132,7 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
     try {
       setIsLoading(true);
       await updateProduct(productData);
+      Alert.alert("Se actualizó el producto!");
       setShouldFetchSingleProduct(true);
     } catch (error) {
       console.error("Error updating product: ", error);
@@ -142,6 +145,7 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
     try {
       setIsLoading(true);
       await deleteProduct(productId);
+      Alert.alert("Se eliminó un producto.");
       setSingleProduct(null);
       setShouldFetchProducts(true);
     } catch (error) {
