@@ -53,7 +53,6 @@ export const DeleteModal = ({
           />
         </View>
       </View>
-      {/* </View> */}
     </Modal>
   );
 };
@@ -66,7 +65,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignSelf: "center",
     bottom: 0,
-    // margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,

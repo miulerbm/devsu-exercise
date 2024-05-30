@@ -57,21 +57,44 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
     }
   }, [route.params.id, isEditing]);
 
-  useEffect(() => {
+  const fillValues = () => {
     if (singleProduct) {
       setValue("id", singleProduct.id);
       setValue("name", singleProduct.name);
       setValue("description", singleProduct.description);
       setValue("logo", singleProduct.logo);
-      setValue("date_release", new Date(singleProduct.date_release));
-      setValue("date_revision", new Date(singleProduct.date_revision));
+      const formattedReleaseDate = moment
+        .utc(new Date(singleProduct!.date_release))
+        .format("YYYY-MM-DD");
+
+      console.log("formattedReleaseDate", formattedReleaseDate);
+
+      const formattedRevisionDate = moment
+        .utc(new Date(singleProduct!.date_revision))
+        .format("YYYY-MM-DD");
+
+      const releaseDate = new Date(formattedReleaseDate);
+      releaseDate.setHours(releaseDate.getHours() + 15);
+
+      const revisionDate = new Date(formattedRevisionDate);
+      revisionDate.setHours(revisionDate.getHours() + 15);
+      console.log("releaseDate", releaseDate);
+
+      setValue("date_release", releaseDate);
+      setValue("date_revision", revisionDate);
     }
+  };
+
+  useEffect(() => {
+    fillValues();
   }, [singleProduct]);
 
   const dateRelease = watch("date_release");
+  console.log("daterelase", dateRelease);
+
   useEffect(() => {
     if (dateRelease) {
-      const dateRevision = moment(dateRelease).add(1, "year").toDate();
+      const dateRevision = moment.utc(dateRelease).add(1, "year").toDate();
       setValue("date_revision", dateRevision);
       trigger("date_revision");
     }
@@ -81,8 +104,8 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
     try {
       const formattedData = {
         ...data,
-        date_release: moment(data.date_release).format("YYYY-MM-DD"),
-        date_revision: moment(data.date_revision).format("YYYY-MM-DD"),
+        date_release: moment.utc(data.date_release).format("YYYY-MM-DD"),
+        date_revision: moment.utc(data.date_revision).format("YYYY-MM-DD"),
       };
 
       if (isEditing) {
@@ -100,6 +123,9 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
 
   const handleReset = () => {
     reset();
+    if (singleProduct) {
+      fillValues();
+    }
   };
 
   const offsetKeyboard = Platform.select({
@@ -251,7 +277,11 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
           name={"date_release"}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <View style={styles.inputContainer}>
-              <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+              <TouchableOpacity
+                onPress={() => {
+                  setShowDatePicker(true);
+                }}
+              >
                 <View
                   style={[
                     styles.inputDate,
@@ -260,9 +290,11 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
                 >
                   <Text>
                     {value
-                      ? moment(value).format("DD/MM/YYYY")
+                      ? moment.utc(value).format("DD/MM/YYYY")
                       : singleProduct
-                      ? moment(singleProduct.date_release).format("DD/MM/YYYY")
+                      ? moment
+                          .utc(singleProduct.date_release)
+                          .format("DD/MM/YYYY")
                       : "Elija una fecha"}
                   </Text>
                 </View>
@@ -271,8 +303,6 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
                 <DateTimePicker
                   testID="dateTimePicker"
                   value={value || new Date()}
-                  mode="date"
-                  is24Hour={true}
                   display="default"
                   onChange={(event, selectedDate) => {
                     setShowDatePicker(false);
@@ -308,11 +338,13 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
                 ]}
                 placeholder={
                   singleProduct
-                    ? moment(singleProduct.date_revision).format("DD/MM/YYYY")
+                    ? moment
+                        .utc(singleProduct.date_revision)
+                        .format("DD/MM/YYYY")
                     : "Elija una fecha de liberación"
                 }
                 placeholderTextColor="#999"
-                value={value ? moment(value).format("DD/MM/YYYY") : ""}
+                value={value ? moment.utc(value).format("DD/MM/YYYY") : ""}
                 editable={false}
                 textAlignVertical="top"
               />
