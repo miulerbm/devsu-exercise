@@ -48,7 +48,6 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
   useEffect(() => {
     if (route.params.id) {
       paramId = route.params.id;
-      console.log("existe param id");
       setIsEditing(true);
       handleGetSingleProduct(paramId);
     } else {
@@ -67,8 +66,6 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
         .utc(new Date(singleProduct!.date_release))
         .format("YYYY-MM-DD");
 
-      console.log("formattedReleaseDate", formattedReleaseDate);
-
       const formattedRevisionDate = moment
         .utc(new Date(singleProduct!.date_revision))
         .format("YYYY-MM-DD");
@@ -78,7 +75,6 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
 
       const revisionDate = new Date(formattedRevisionDate);
       revisionDate.setHours(revisionDate.getHours() + 15);
-      console.log("releaseDate", releaseDate);
 
       setValue("date_release", releaseDate);
       setValue("date_revision", revisionDate);
@@ -90,7 +86,6 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
   }, [singleProduct]);
 
   const dateRelease = watch("date_release");
-  console.log("daterelase", dateRelease);
 
   useEffect(() => {
     if (dateRelease) {
@@ -104,6 +99,7 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
     try {
       const formattedData = {
         ...data,
+        id: data.id.trim(),
         date_release: moment.utc(data.date_release).format("YYYY-MM-DD"),
         date_revision: moment.utc(data.date_revision).format("YYYY-MM-DD"),
       };
@@ -307,7 +303,6 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
                   onChange={(event, selectedDate) => {
                     setShowDatePicker(false);
                     onChange(selectedDate || value);
-                    console.log("selectedDate", selectedDate);
                   }}
                 />
               )}

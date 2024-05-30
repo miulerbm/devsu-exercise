@@ -1,34 +1,66 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { ProductInterface } from "../types/types";
+import { Alert } from "react-native";
 
 const BASE_URL = "http://192.168.1.7:3002/bp/products";
+const TIMEOUT = 5000;
+
+const handleError = (error: unknown, action: string) => {
+  if (axios.isAxiosError(error)) {
+    if (error.response) {
+      Alert.alert(
+        `Error al ${action}`,
+        `Error del servidor: ${error.response.status}`
+      );
+    } else if (error.request) {
+      Alert.alert(
+        `Error al ${action}`,
+        "No se recibió respuesta del servidor."
+      );
+    } else {
+      Alert.alert(
+        `Error al ${action}`,
+        `Error en la configuración de la solicitud: ${error.message}`
+      );
+    }
+  } else {
+    Alert.alert(`Error al ${action}`, `Error desconocido: ${String(error)}`);
+  }
+  throw new Error(`Error al ${action}: ${error}`);
+};
 
 export const getProducts = async () => {
   try {
-    const response = await axios.get<{ data: ProductInterface[] }>(BASE_URL);
+    const response = await axios.get<{ data: ProductInterface[] }>(BASE_URL, {
+      timeout: TIMEOUT,
+    });
     return response.data.data;
   } catch (error) {
-    throw new Error("Error trayendo los productos " + error);
+    handleError(error, "traer productos");
   }
 };
 
 export const getSingleProduct = async (productId: string) => {
   try {
     const response = await axios.get<ProductInterface>(
-      `${BASE_URL}/${productId}`
+      `${BASE_URL}/${productId}`,
+      { timeout: TIMEOUT }
     );
     return response.data;
   } catch (error) {
-    throw new Error("Error trayendo el producto " + error);
+    handleError(error, "traer el producto");
   }
 };
 
 export const createProduct = async (productData: ProductInterface) => {
   try {
-    const { data } = await axios.post<ProductInterface>(BASE_URL, productData);
+    const { data } = await axios.post<ProductInterface>(BASE_URL, productData, {
+      timeout: TIMEOUT,
+    });
+    Alert.alert("Se creó un nuevo producto!");
     return data;
   } catch (error) {
-    throw new Error("Error al crear el producto: " + error);
+    handleError(error, "crear el producto");
   }
 };
 
@@ -36,32 +68,37 @@ export const updateProduct = async (productData: ProductInterface) => {
   try {
     const response = await axios.put<ProductInterface>(
       `${BASE_URL}/${productData.id}`,
-      productData
+      productData,
+      { timeout: TIMEOUT }
     );
+    Alert.alert("Se actualizó el producto!");
     return response.data;
   } catch (error) {
-    throw new Error("Error al actualizar el producto: " + error);
+    handleError(error, "actualizar el producto");
   }
 };
 
 export const deleteProduct = async (productId: string) => {
   try {
     const response = await axios.delete<ProductInterface>(
-      `${BASE_URL}/${productId}`
+      `${BASE_URL}/${productId}`,
+      { timeout: TIMEOUT }
     );
+    Alert.alert("Se eliminó un producto.");
     return response.data;
   } catch (error) {
-    throw new Error("Error al eliminar el producto: " + error);
+    handleError(error, "eliminar el producto");
   }
 };
 
 export const checkProductExists = async (productId: string) => {
   try {
     const response = await axios.get<boolean>(
-      `${BASE_URL}/verification/${productId}`
+      `${BASE_URL}/verification/${productId}`,
+      { timeout: TIMEOUT }
     );
     return response.data;
   } catch (error) {
-    throw new Error("Error verificando la existencia del producto: " + error);
+    handleError(error, "verificar la existencia del producto");
   }
 };

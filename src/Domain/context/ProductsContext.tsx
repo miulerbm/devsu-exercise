@@ -81,9 +81,9 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
     try {
       setIsLoading(true);
       const response = await getProducts();
-      setProducts(response);
+      setProducts(response!);
     } catch (error) {
-      console.error("Error fetching products: ", error);
+      setProducts([]);
     } finally {
       setIsLoading(false);
     }
@@ -94,7 +94,7 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
     try {
       setIsLoading(true);
       const response = await getSingleProduct(singleProduct.id);
-      setSingleProduct(response);
+      setSingleProduct(response!);
     } catch (error) {
       console.error("Error fetching single product: ", error);
     } finally {
@@ -106,7 +106,7 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
     try {
       setIsLoading(true);
       const product = await getSingleProduct(productId);
-      setSingleProduct(product);
+      setSingleProduct(product!);
     } catch (error) {
       console.error("Error fetching single product:", error);
       setSingleProduct(null);
@@ -124,7 +124,6 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
         return;
       } else {
         await createProduct(productData);
-        Alert.alert("Se creó un nuevo producto!");
         setShouldFetchProducts(true);
       }
     } catch (error) {
@@ -144,7 +143,7 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
       }
       setIsLoading(true);
       await updateProduct(productData);
-      Alert.alert("Se actualizó el producto!");
+
       setShouldFetchSingleProduct(true);
     } catch (error) {
       console.error("Error updating product: ", error);
@@ -157,7 +156,7 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
     try {
       setIsLoading(true);
       await deleteProduct(productId);
-      Alert.alert("Se eliminó un producto.");
+
       setSingleProduct(null);
       setShouldFetchProducts(true);
     } catch (error) {
