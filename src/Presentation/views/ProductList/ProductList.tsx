@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   FlatList,
   RefreshControl,
@@ -11,54 +11,25 @@ import {
 } from "react-native";
 import { RootStackParamList } from "../../../../App";
 import { ProductInterface } from "../../../Data/types/types";
-import { useProducts } from "../../../Domain/context/ProductsContext";
 import Button from "../../components/Button";
 import GrayDivider from "../../components/GrayDivider";
 import Header from "../../components/Header";
 import styles from "./Styles";
+import useViewModel from "./ViewModel";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProductListScreen"> {}
 
 const ProductListScreen = ({ navigation }: Props) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState<ProductInterface[]>(
-    []
-  );
-  const [refreshing, setRefreshing] = useState(false);
-  const { products, isLoading, setSingleProduct, fetchProducts } =
-    useProducts();
-
-  useEffect(() => {
-    if (products) {
-      setFilteredProducts(products);
-    }
-  }, [products]);
-
-  useEffect(() => {
-    applySearchFilter();
-  }, [searchQuery]);
-
-  const applySearchFilter = () => {
-    console.log(products);
-    if (products) {
-      if (!searchQuery) {
-        setFilteredProducts(products);
-      } else {
-        const filtered = products.filter(
-          (product) =>
-            product.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            product.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setFilteredProducts(filtered);
-      }
-    }
-  };
-
-  const handleRefresh = () => {
-    setRefreshing(true);
-    fetchProducts().finally(() => setRefreshing(false));
-  };
+  const {
+    filteredProducts,
+    handleRefresh,
+    refreshing,
+    searchQuery,
+    setSearchQuery,
+    isLoading,
+    setSingleProduct,
+  } = useViewModel();
 
   const renderProduct = ({ item }: { item: ProductInterface }) => (
     <TouchableOpacity

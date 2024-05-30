@@ -9,22 +9,17 @@ import Header from "../../components/Header";
 import styles from "./Styles";
 import { DeleteModal } from "../ProductForm/components/DeleteModal";
 import moment from "moment";
+import useViewModel from "./ViewModel";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProductDetailScreen"> {}
 
 const ProductDetailScreen = ({ navigation, route }: Props) => {
-  const { singleProduct, handleGetSingleProduct } = useProducts();
-  let paramId = null;
-
-  const [modalVisible, setModalVisible] = useState(false);
-
-  useEffect(() => {
-    if (route.params.id) {
-      paramId = route.params.id;
-      handleGetSingleProduct(paramId);
-    }
-  }, [route.params.id]);
+  const { singleProduct, modalVisible, setModalVisible, isLoading } =
+    useViewModel({
+      navigation,
+      route,
+    });
 
   if (!singleProduct) {
     return (
