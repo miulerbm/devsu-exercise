@@ -8,40 +8,24 @@ import GrayDivider from "../../components/GrayDivider";
 import { ProductInterface } from "../../../Data/types/types";
 import { getSingleProduct } from "../../../Data/api/apiService";
 import Button from "../../components/Button";
+import { useProducts } from "../../../Domain/context/ProductsContext";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProductDetailScreen"> {}
 
 const ProductDetailScreen = ({ navigation, route }: Props) => {
-  const [product, setProduct] = useState<ProductInterface | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { singleProduct, handleGetSingleProduct } = useProducts();
+  let paramId = null;
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        setLoading(true);
-        const productId = route.params.id;
-        // console.log("productId", productId);
-        const singleProduct = await getSingleProduct(productId);
-        setProduct(singleProduct);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching product:", error);
-        setLoading(false);
-      }
-    };
+    if (route.params.id) {
+      paramId = route.params.id;
+      handleGetSingleProduct(paramId);
+    }
+  }, [route.params.id]);
 
-    fetchProduct();
-  }, []);
-
-  // console.log("product", product);
-
-  if (loading) {
-    return (
-      <View style={styles.screenContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
+  if (!singleProduct) {
+    return <ActivityIndicator size="large" />;
   }
 
   return (
@@ -50,20 +34,20 @@ const ProductDetailScreen = ({ navigation, route }: Props) => {
       <GrayDivider />
       <View style={{ flex: 1 }}>
         <View style={styles.idContainer}>
-          <Text style={styles.idText}>ID: {product!.id}</Text>
+          <Text style={styles.idText}>ID: {singleProduct!.id}</Text>
           <Text style={styles.extraInfo}>Información extra</Text>
         </View>
 
         <View style={styles.productDetailsContainer}>
           <View style={styles.infoField}>
             <Text style={styles.extraInfo}>Nombre</Text>
-            <Text style={{ fontWeight: "bold" }}>[{product!.name}]</Text>
+            <Text style={{ fontWeight: "bold" }}>[{singleProduct!.name}]</Text>
           </View>
 
           <View style={styles.infoField}>
             <Text style={styles.extraInfo}>Descripción</Text>
             <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
-              [{product!.description}]
+              [{singleProduct!.description}]
             </Text>
           </View>
 
@@ -88,14 +72,14 @@ const ProductDetailScreen = ({ navigation, route }: Props) => {
           <View style={styles.infoField}>
             <Text style={styles.extraInfo}>Fecha liberación</Text>
             <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
-              [{product!.date_release.toString()}]
+              [{singleProduct!.date_release.toString()}]
             </Text>
           </View>
 
           <View style={styles.infoField}>
             <Text style={styles.extraInfo}>Fecha revisión</Text>
             <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
-              [{product!.date_revision.toString()}]
+              [{singleProduct!.date_revision.toString()}]
             </Text>
           </View>
         </View>
@@ -105,7 +89,7 @@ const ProductDetailScreen = ({ navigation, route }: Props) => {
           title="Editar"
           type="secondary"
           onPress={() =>
-            navigation.navigate("ProductFormScreen", { id: product?.id })
+            navigation.navigate("ProductFormScreen", { id: singleProduct?.id })
           }
         />
         <Button title="Eliminar" type="danger" />

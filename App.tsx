@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProductListScreen from "./src/Presentation/views/ProductList/ProductList";
 import ProductDetailScreen from "./src/Presentation/views/ProductDetail/ProductDetail";
 import ProductFormScreen from "./src/Presentation/views/ProductForm/ProductForm";
+import { ProductsProvider } from "./src/Domain/context/ProductsContext";
 
 export type RootStackParamList = {
   ProductListScreen: undefined;
@@ -18,31 +19,33 @@ export default function App() {
   return (
     <View style={styles.layout}>
       <View style={styles.container}>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ animation: "none" }}>
-            <Stack.Screen
-              name="ProductListScreen"
-              component={ProductListScreen}
-              options={({ route, navigation }) => ({
-                headerShown: false,
-              })}
-            />
-            <Stack.Screen
-              name="ProductDetailScreen"
-              component={ProductDetailScreen}
-              options={({ route, navigation }) => ({
-                headerShown: false,
-              })}
-            />
-            <Stack.Screen
-              name="ProductFormScreen"
-              component={ProductFormScreen}
-              options={({ route, navigation }) => ({
-                headerShown: false,
-              })}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <ProductsProvider>
+          <NavigationContainer>
+            <Stack.Navigator screenOptions={{ animation: "none" }}>
+              <Stack.Screen
+                name="ProductListScreen"
+                component={ProductListScreen}
+                options={({ route, navigation }) => ({
+                  headerShown: false,
+                })}
+              />
+              <Stack.Screen
+                name="ProductDetailScreen"
+                component={ProductDetailScreen}
+                options={({ route, navigation }) => ({
+                  headerShown: false,
+                })}
+              />
+              <Stack.Screen
+                name="ProductFormScreen"
+                component={ProductFormScreen}
+                options={({ route, navigation }) => ({
+                  headerShown: false,
+                })}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </ProductsProvider>
       </View>
     </View>
   );

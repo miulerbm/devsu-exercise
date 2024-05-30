@@ -24,9 +24,10 @@ export const formSchema = z.object({
 
   date_release: z
     .date({ required_error: "Debe seleccionar una fecha" })
-    .min(new Date("1900-01-01"), "La fecha de liberación no es válida"),
+    .refine((date) => date > new Date(), {
+      message: "La fecha de liberación debe ser mayor a la fecha de hoy",
+    }),
 
-  date_revision: z
-    .date({ required_error: "Debe seleccionar una fecha" })
-    .min(new Date("1900-01-01"), "La fecha de liberación no es válida"),
+  date_revision: z.date({ required_error: "Debe seleccionar una fecha" }),
+  // .min(new Date("1900-01-01"), "La fecha de liberación no es válida"),
 });

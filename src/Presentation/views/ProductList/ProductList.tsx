@@ -1,6 +1,5 @@
-import { StackScreenProps } from "@react-navigation/stack";
 import React, { useEffect, useState } from "react";
-import { RootStackParamList } from "../../../../App";
+import { StackScreenProps } from "@react-navigation/stack";
 import {
   ActivityIndicator,
   FlatList,
@@ -11,46 +10,36 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { RootStackParamList } from "../../../../App";
 import styles from "./Styles";
 import Header from "../../components/Header";
 import GrayDivider from "../../components/GrayDivider";
 import Button from "../../components/Button";
-import { getProducts } from "../../../Data/api/apiService";
+import { useProducts } from "../../../Domain/context/ProductsContext";
 import { ProductInterface } from "../../../Data/types/types";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProductListScreen"> {}
 
-const ProductListScreen = ({ navigation, route }: Props) => {
+const ProductListScreen = ({ navigation }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [products, setProducts] = useState<ProductInterface[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<ProductInterface[]>(
     []
   );
   const [refreshing, setRefreshing] = useState(false);
-  const [isFetching, setIsFetching] = useState(true);
+  const { products, isFetchingProducts, setSingleProduct, fetchProducts } =
+    useProducts();
+  console.log("products", products);
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    setIsFetching(true);
-    try {
-      const response = await getProducts();
-      setProducts(response);
-      setFilteredProducts(response);
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    } finally {
-      setIsFetching(false);
-      setRefreshing(false);
+    if (products) {
+      setFilteredProducts(products);
     }
-  };
+  }, [products]);
 
   useEffect(() => {
     applySearchFilter();
-  }, [searchQuery, products]);
+  }, [searchQuery]);
 
   const applySearchFilter = () => {
     if (!searchQuery) {
@@ -67,13 +56,12 @@ const ProductListScreen = ({ navigation, route }: Props) => {
 
   const handleRefresh = () => {
     setRefreshing(true);
-    setTimeout(() => {
-      fetchProducts();
-    }, 2000);
+    fetchProducts().finally(() => setRefreshing(false));
   };
 
   const renderProduct = ({ item }: { item: ProductInterface }) => (
     <TouchableOpacity
+      key={item.id}
       activeOpacity={0.9}
       onPress={() =>
         navigation.navigate("ProductDetailScreen", { id: item.id })
@@ -100,13 +88,7 @@ const ProductListScreen = ({ navigation, route }: Props) => {
         onChangeText={setSearchQuery}
       />
 
-      {isFetching ? (
-        <ActivityIndicator
-          style={styles.loadingIndicator}
-          size="large"
-          color="#0000ff"
-        />
-      ) : filteredProducts.length === 0 ? (
+      {filteredProducts.length === 0 ? (
         <View style={{ flex: 1 }}>
           <ScrollView
             refreshControl={
@@ -141,8 +123,11 @@ const ProductListScreen = ({ navigation, route }: Props) => {
       <View style={styles.buttonContainer}>
         <Button
           title="Agregar"
-          onPress={() => navigation.navigate("ProductFormScreen", {})}
-          isDisabled={isFetching}
+          onPress={() => {
+            setSingleProduct(null);
+            navigation.navigate("ProductFormScreen", {});
+          }}
+          isDisabled={isFetchingProducts}
         />
       </View>
     </View>

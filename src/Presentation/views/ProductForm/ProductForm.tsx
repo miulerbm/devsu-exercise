@@ -3,6 +3,7 @@ import styles from "./Styles";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../../App";
 import {
+  ActivityIndicator,
   Alert,
   KeyboardAvoidingView,
   Platform,
@@ -22,55 +23,56 @@ import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { createProduct, getSingleProduct } from "../../../Data/api/apiService";
 import { ProductInterface } from "../../../Data/types/types";
+import { useProducts } from "../../../Domain/context/ProductsContext";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProductFormScreen"> {}
 
 const ProductFormScreen = ({ navigation, route }: Props) => {
-  const defaultValues = {
-    id: "defaultID",
-    nombre: "defaultName",
-    descripcion: "defaultDescription",
-    logo: "defaultURL",
-    date_release: null,
-    date_revision: null,
-  };
-
-  const [product, setProduct] = useState<ProductInterface | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
-
-  useEffect(() => {
-    const productId = route.params.id;
-    console.log("productId", productId);
-
-    if (productId) {
-      setIsEditing(true);
-      const fetchProduct = async () => {
-        try {
-          setLoading(true);
-          // console.log("productId", productId);
-          const singleProduct = await getSingleProduct(productId!);
-          setProduct(singleProduct);
-          setLoading(false);
-        } catch (error) {
-          console.error("Error fetching product:", error);
-          setLoading(false);
-        }
-      };
-
-      fetchProduct();
-    }
-  }, []);
-
-  console.log("product", product);
-  console.log("isEditing", isEditing);
+  const {
+    singleProduct,
+    setSingleProduct,
+    handleCreateProduct,
+    handleUpdateProduct,
+    handleGetSingleProduct,
+    setShouldFetchProducts,
+    setShouldFetchSingleProduct,
+  } = useProducts();
 
   const [isLoading, setIsLoading] = useState(false);
-
+  const [isEditing, setIsEditing] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const { control, handleSubmit, setValue, reset, watch, trigger } = useForm({
     resolver: zodResolver(formSchema),
   });
+
+  let paramId = null;
+
+  useEffect(() => {
+    console.log("id", route.params.id);
+    console.log("isEditing", isEditing);
+
+    if (route.params.id) {
+      paramId = route.params.id;
+      console.log("existe param id");
+      setIsEditing(true);
+      handleGetSingleProduct(paramId);
+    } else {
+      setIsEditing(false);
+      setSingleProduct(null);
+    }
+  }, [route.params.id, isEditing]);
+
+  useEffect(() => {
+    if (singleProduct) {
+      setValue("id", singleProduct.id);
+      setValue("name", singleProduct.name);
+      setValue("description", singleProduct.description);
+      setValue("logo", singleProduct.logo);
+      setValue("date_release", new Date(singleProduct.date_release));
+      setValue("date_revision", new Date(singleProduct.date_revision));
+    }
+  }, [singleProduct]);
 
   const dateRelease = watch("date_release");
   useEffect(() => {
@@ -79,12 +81,7 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
       setValue("date_revision", dateRevision);
       trigger("date_revision");
     }
-  }, [dateRelease, setValue]);
-
-  const offsetKeyboard = Platform.select({
-    ios: 0,
-    android: 60,
-  });
+  }, [dateRelease]);
 
   const onSubmit = async (data: any) => {
     try {
@@ -94,24 +91,29 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
         date_release: moment(data.date_release).format("YYYY-MM-DD"),
         date_revision: moment(data.date_revision).format("YYYY-MM-DD"),
       };
-      console.log("formattedData", formattedData);
 
-      const response = await createProduct(formattedData);
-      console.log("Response:", response);
-      Alert.alert("Producto creado exitosamente");
+      if (isEditing) {
+        handleUpdateProduct(formattedData);
+        setShouldFetchSingleProduct(true);
+      } else {
+        handleCreateProduct(formattedData);
+        setShouldFetchProducts(true);
+      }
     } catch (error: any) {
       console.error("Error:", error);
-      Alert.alert("Hubo un error al crear el producto");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const [showDatePicker, setShowDatePicker] = useState(false);
-
   const handleReset = () => {
     reset();
   };
+
+  const offsetKeyboard = Platform.select({
+    ios: 0,
+    android: 60,
+  });
 
   const renderFormFields = (
     control: Control<FieldValues, any>,
@@ -142,7 +144,7 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
                 ]}
                 placeholderTextColor="#999"
                 editable={!isEditing}
-                defaultValue={product ? product.id : ""}
+                defaultValue={singleProduct ? singleProduct.id : ""}
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
@@ -173,7 +175,7 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
                   error && { borderColor: "red", borderWidth: 1 },
                 ]}
                 placeholderTextColor="#999"
-                defaultValue={product ? product.name : ""}
+                defaultValue={singleProduct ? singleProduct.name : ""}
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
@@ -204,7 +206,7 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
                   error && { borderColor: "red", borderWidth: 1 },
                 ]}
                 placeholderTextColor="#999"
-                defaultValue={product ? product.description : ""}
+                defaultValue={singleProduct ? singleProduct.description : ""}
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
@@ -234,7 +236,7 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
                   styles.input,
                   error && { borderColor: "red", borderWidth: 1 },
                 ]}
-                defaultValue={product ? product.logo : ""}
+                defaultValue={singleProduct ? singleProduct.logo : ""}
                 placeholderTextColor="#999"
                 value={value}
                 onChangeText={onChange}
@@ -267,8 +269,8 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
                   <Text>
                     {value
                       ? moment(value).format("DD/MM/YYYY")
-                      : product
-                      ? moment(product.date_release).format("DD/MM/YYYY")
+                      : singleProduct
+                      ? moment(singleProduct.date_release).format("DD/MM/YYYY")
                       : "Elija una fecha"}
                   </Text>
                 </View>
@@ -313,8 +315,8 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
                   error && { borderColor: "red", borderWidth: 1 },
                 ]}
                 placeholder={
-                  product
-                    ? moment(product.date_revision).format("DD/MM/YYYY")
+                  singleProduct
+                    ? moment(singleProduct.date_revision).format("DD/MM/YYYY")
                     : "Elija una fecha de liberación"
                 }
                 placeholderTextColor="#999"
@@ -331,6 +333,10 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
       </View>
     </>
   );
+
+  if (!singleProduct && isEditing) {
+    return <ActivityIndicator size="large" />;
+  }
 
   return (
     <View style={styles.screenContainer}>
