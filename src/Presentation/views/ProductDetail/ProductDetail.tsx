@@ -8,6 +8,7 @@ import GrayDivider from "../../components/GrayDivider";
 import Header from "../../components/Header";
 import styles from "./Styles";
 import { DeleteModal } from "../ProductForm/components/DeleteModal";
+import moment from "moment";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProductDetailScreen"> {}
@@ -85,14 +86,14 @@ const ProductDetailScreen = ({ navigation, route }: Props) => {
           <View style={styles.infoField}>
             <Text style={styles.extraInfo}>Fecha liberación</Text>
             <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
-              [{singleProduct!.date_release.toString()}]
+              [{moment(singleProduct!.date_release).format("DD/MM/YYYY")}]
             </Text>
           </View>
 
           <View style={styles.infoField}>
             <Text style={styles.extraInfo}>Fecha revisión</Text>
             <Text style={{ fontWeight: "bold", maxWidth: "60%" }}>
-              [{singleProduct!.date_revision.toString()}]
+              [{moment(singleProduct!.date_revision).format("DD/MM/YYYY")}]
             </Text>
           </View>
         </View>

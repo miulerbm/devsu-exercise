@@ -114,7 +114,6 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
     }
   };
 
-  //MUTATIONS:
   const handleCreateProduct = async (productData: ProductInterface) => {
     try {
       setIsLoading(true);
@@ -130,6 +129,12 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
 
   const handleUpdateProduct = async (productData: ProductInterface) => {
     try {
+      if (JSON.stringify(productData) === JSON.stringify(singleProduct)) {
+        Alert.alert(
+          "No hay cambios para actualizar. Por favor, modifique el producto."
+        );
+        return;
+      }
       setIsLoading(true);
       await updateProduct(productData);
       Alert.alert("Se actualizó el producto!");
