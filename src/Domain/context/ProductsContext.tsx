@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import {
+  checkProductExists,
   createProduct,
   deleteProduct,
   getProducts,
@@ -117,9 +118,15 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({
   const handleCreateProduct = async (productData: ProductInterface) => {
     try {
       setIsLoading(true);
-      await createProduct(productData);
-      Alert.alert("Se creó un nuevo producto!");
-      setShouldFetchProducts(true);
+      const productExists = await checkProductExists(productData.id);
+      if (productExists) {
+        Alert.alert("Ya existe un producto con ese ID!");
+        return;
+      } else {
+        await createProduct(productData);
+        Alert.alert("Se creó un nuevo producto!");
+        setShouldFetchProducts(true);
+      }
     } catch (error) {
       console.error("Error creating product: ", error);
     } finally {

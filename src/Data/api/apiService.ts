@@ -54,3 +54,14 @@ export const deleteProduct = async (productId: string) => {
     throw new Error("Error al eliminar el producto: " + error);
   }
 };
+
+export const checkProductExists = async (productId: string) => {
+  try {
+    const response = await axios.get<boolean>(
+      `${BASE_URL}/verification/${productId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error("Error verificando la existencia del producto: " + error);
+  }
+};
