@@ -51,6 +51,8 @@ Asegúrate de tener instaladas las siguientes herramientas:
 
 Para correr las pruebas, simplemente ejecuta el comando `yarn test`.
 
+Se recomienda correr `yarn test` dos veces, pues la primera, dado que el entorno de pruebas se construirá por primera vez, y hay pruebas que dependen de funciones asíncronas, al no resolverse ciertas requests, se interpretará como error. La segunda vez funcionarán de mejor manera.
+
 #### Descripción de las pruebas:
 
 Las pruebas están organizadas según los archivos de prueba proporcionados:
