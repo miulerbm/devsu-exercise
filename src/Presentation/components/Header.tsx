@@ -21,9 +21,9 @@ const Header = ({ title, goBack }: HeaderProps) => {
       {goBack ? (
         <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
           <Image
-            style={{ height: 10, width: 10 }}
+            style={{ height: 16, width: 16 }}
             source={{
-              uri: "https://cdn-icons-png.flaticon.com/256/64/64497.png",
+              uri: "https://cdn-icons-png.flaticon.com/256/271/271220.png",
             }}
           />
         </TouchableOpacity>
@@ -55,9 +55,6 @@ const styles = StyleSheet.create({
   },
   backButton: {
     width: "10%",
-    borderRadius: 10,
-    borderWidth: 2,
     alignItems: "center",
-    // paddingHorizontal: 5,
   },
 });

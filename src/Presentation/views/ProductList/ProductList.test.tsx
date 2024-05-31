@@ -4,11 +4,17 @@ import { render } from "@testing-library/react-native";
 import { RootStackParamList } from "../../../../App";
 import { StackNavigationProp } from "@react-navigation/stack";
 import ProductListScreen from "./ProductList";
+import { ProductsProvider } from "../../../Domain/context/ProductsContext";
+import { NavigationContainer } from "@react-navigation/native";
 
 type NavigationScreenPropAlias = StackNavigationProp<
   RootStackParamList,
   "ProductListScreen"
 >;
+
+const Wrapper = ({ children }: any) => {
+  return <ProductsProvider>{children}</ProductsProvider>;
+};
 
 describe("ProductListScreen", () => {
   test("renders product list correctly", async () => {
@@ -22,10 +28,14 @@ describe("ProductListScreen", () => {
     };
 
     const { getByText, getByPlaceholderText } = render(
-      <ProductListScreen
-        navigation={navigation as NavigationScreenPropAlias}
-        route={route as any}
-      />
+      <Wrapper>
+        <NavigationContainer>
+          <ProductListScreen
+            navigation={navigation as NavigationScreenPropAlias}
+            route={route as any}
+          />
+        </NavigationContainer>
+      </Wrapper>
     );
 
     expect(getByText("BANCO")).toBeTruthy();
