@@ -214,6 +214,7 @@ const ProductFormScreen = ({ navigation, route }: Props) => {
                   testID="dateTimePicker"
                   value={value || new Date()}
                   display="default"
+                  timeZoneName={"America/Lima"}
                   onChange={(event, selectedDate) => {
                     setShowDatePicker(false);
                     onChange(selectedDate || value);
