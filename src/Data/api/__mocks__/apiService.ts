@@ -1,9 +1,10 @@
-// __mocks__/apiService.js
+import { ProductInterface } from "../../types/types";
+
 export const getProducts = jest.fn(() =>
   Promise.resolve([
     {
       id: "uno",
-      name: "Producto 1",
+      name: "Producto a",
       description: "Descripción del producto 1",
       logo: "Assets1",
       date_release: "2026-06-14",
@@ -28,7 +29,11 @@ export const getProducts = jest.fn(() =>
   ])
 );
 
-export const getSingleProduct = jest.fn();
+export const getSingleProduct = jest.fn<
+  Promise<ProductInterface | undefined>,
+  [string]
+>();
+
 export const createProduct = jest.fn();
 export const updateProduct = jest.fn();
 export const deleteProduct = jest.fn();
