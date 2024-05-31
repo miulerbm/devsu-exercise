@@ -2,7 +2,7 @@ import axios from "axios";
 import { ProductInterface } from "../types/types";
 import { Alert } from "react-native";
 
-const BASE_URL = "http://192.168.1.7:3002/bp/products";
+export const BASE_URL = "http://192.168.1.7:3002/bp/products";
 const TIMEOUT = 5000;
 
 const handleError = (error: unknown, action: string) => {

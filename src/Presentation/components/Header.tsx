@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Icon } from "react-native-elements";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+// import { Icon } from "react-native-elements";
 
 interface HeaderProps {
   title: string;
@@ -20,13 +20,23 @@ const Header = ({ title, goBack }: HeaderProps) => {
     <View style={styles.headerContainer}>
       {goBack ? (
         <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-          <Icon name="arrow-back" color="#000080" size={16} />
+          <Image
+            style={{ height: 10, width: 10 }}
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/256/64/64497.png",
+            }}
+          />
         </TouchableOpacity>
       ) : (
         <View style={{ width: "10%" }} />
       )}
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Icon color={"#000080"} name="money" />
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+        <Image
+          style={{ height: 20, width: 20 }}
+          source={{
+            uri: "https://cdn-icons-png.freepik.com/256/6871/6871596.png",
+          }}
+        />
         <Text style={{ fontWeight: "bold", color: "#000080" }}>{title}</Text>
       </View>
       <View style={{ width: "10%" }} />
@@ -47,5 +57,7 @@ const styles = StyleSheet.create({
     width: "10%",
     borderRadius: 10,
     borderWidth: 2,
+    alignItems: "center",
+    // paddingHorizontal: 5,
   },
 });
