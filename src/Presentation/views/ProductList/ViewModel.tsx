@@ -28,8 +28,12 @@ const ProductListViewModel = () => {
       } else {
         const filtered = products.filter(
           (product) =>
-            product.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            product.name.toLowerCase().includes(searchQuery.toLowerCase())
+            product.id
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase().trim()) ||
+            product.name
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase().trim())
         );
         setFilteredProducts(filtered);
       }
