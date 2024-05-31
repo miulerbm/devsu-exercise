@@ -26,7 +26,6 @@ const handleError = (error: unknown, action: string) => {
   } else {
     Alert.alert(`Error al ${action}`, `Error desconocido: ${String(error)}`);
   }
-  // throw new Error(`Error al ${action}: ${error}`);
 };
 
 export const getProducts = async () => {
@@ -99,7 +98,6 @@ export const checkProductExists = async (productId: string) => {
     );
     return response.data;
   } catch (error) {
-    // handleError(error, "verificar la existencia del producto");
     return;
   }
 };
