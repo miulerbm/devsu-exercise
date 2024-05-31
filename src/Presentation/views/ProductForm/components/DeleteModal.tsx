@@ -102,6 +102,6 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 10,
     flexDirection: "column",
-    gap: 5,
+    gap: 10,
   },
 });
