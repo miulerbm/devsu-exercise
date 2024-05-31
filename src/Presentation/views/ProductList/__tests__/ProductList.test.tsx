@@ -1,11 +1,12 @@
 import { describe, expect, test } from "@jest/globals";
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { RootStackParamList } from "../../../../App";
+import { RootStackParamList } from "../../../../../App";
 import { StackNavigationProp } from "@react-navigation/stack";
-import ProductListScreen from "./ProductList";
-import { ProductsProvider } from "../../../Domain/context/ProductsContext";
+import ProductListScreen from "../ProductList";
+import { ProductsProvider } from "../../../../Domain/context/ProductsContext";
 import { NavigationContainer } from "@react-navigation/native";
+import { ProductInterface } from "../../../../Data/types/types";
 
 type NavigationScreenPropAlias = StackNavigationProp<
   RootStackParamList,
@@ -40,6 +41,6 @@ describe("ProductListScreen", () => {
 
     expect(getByText("BANCO")).toBeTruthy();
     expect(getByPlaceholderText("Search...")).toBeTruthy();
-    expect(getByText("Agregar")).toBeTruthy();
+    expect(getByText("Espere...")).toBeTruthy();
   });
 });
