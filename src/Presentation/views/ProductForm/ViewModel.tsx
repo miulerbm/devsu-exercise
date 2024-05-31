@@ -84,6 +84,9 @@ const ProductFormViewModel = ({ navigation, route }: Props) => {
       const formattedData = {
         ...data,
         id: data.id.trim(),
+        name: data.name.trim(),
+        description: data.description.trim(),
+        logo: data.logo.trim(),
         date_release: moment.utc(data.date_release).format("YYYY-MM-DD"),
         date_revision: moment.utc(data.date_revision).format("YYYY-MM-DD"),
       };
