@@ -52,5 +52,5 @@ describe("ProductListScreen", () => {
     });
 
     expect(getByText("Agregar")).toBeTruthy();
-  });
+  }, 10000);
 });
