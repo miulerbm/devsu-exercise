@@ -1,9 +1,8 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { StackScreenProps } from "@react-navigation/stack";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { Control, Controller, FieldValues, useForm } from "react-hook-form";
+import React from "react";
+import { Control, Controller, FieldValues } from "react-hook-form";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -15,8 +14,6 @@ import {
   View,
 } from "react-native";
 import { RootStackParamList } from "../../../../App";
-import { formSchema } from "../../../Data/validators/validators";
-import { useProducts } from "../../../Domain/context/ProductsContext";
 import Button from "../../components/Button";
 import GrayDivider from "../../components/GrayDivider";
 import Header from "../../components/Header";

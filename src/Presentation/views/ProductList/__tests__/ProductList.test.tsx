@@ -1,5 +1,5 @@
-import { describe, expect, test, beforeEach, jest } from "@jest/globals";
 import React from "react";
+import { describe, expect, test, beforeEach, jest } from "@jest/globals";
 import { render, waitFor } from "@testing-library/react-native";
 import { RootStackParamList } from "../../../../../App";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -19,7 +19,7 @@ const Wrapper = ({ children }: any) => {
 };
 
 describe("ProductListScreen", () => {
-  test("renders product list with mock data correctly", async () => {
+  test("renderiza correctamente una lista de productos con data mockeada", async () => {
     const navigation: Partial<NavigationScreenPropAlias> = {
       navigate: jest.fn(),
     };

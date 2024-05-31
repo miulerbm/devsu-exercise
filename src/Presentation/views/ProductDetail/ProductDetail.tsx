@@ -1,14 +1,13 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React, { useEffect, useState } from "react";
+import moment from "moment";
+import React from "react";
 import { ActivityIndicator, Image, Text, View } from "react-native";
 import { RootStackParamList } from "../../../../App";
-import { useProducts } from "../../../Domain/context/ProductsContext";
 import Button from "../../components/Button";
 import GrayDivider from "../../components/GrayDivider";
 import Header from "../../components/Header";
-import styles from "./Styles";
 import { DeleteModal } from "../ProductForm/components/DeleteModal";
-import moment from "moment";
+import styles from "./Styles";
 import useViewModel from "./ViewModel";
 
 interface Props

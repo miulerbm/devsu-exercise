@@ -34,7 +34,7 @@ describe("ProductDetailScreen", () => {
     (getSingleProduct as jest.Mock).mockResolvedValue(mockProduct as never);
   });
 
-  test("renders product details with mock data correctly", async () => {
+  test("renderiza correctamente detalles de un producto con data mockeada", async () => {
     const navigation: Partial<NavigationScreenPropAlias> = {
       navigate: jest.fn(),
     };
